@@ -5,9 +5,13 @@ import kr.myselectshop.dto.ProductMypriceRequestDto;
 import kr.myselectshop.entity.Product;
 import kr.myselectshop.dto.ProductRequestDto;
 import kr.myselectshop.dto.ProductResponseDto;
+import kr.myselectshop.naver.dto.ItemDto;
 import kr.myselectshop.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -33,5 +37,22 @@ public class ProductService {
 
         product.update(productMypriceRequestDto);
         return null;
+    }
+
+    public List<ProductResponseDto> getProducts() {
+
+        List<Product> products = productRepository.findAll();
+        List<ProductResponseDto> productResponseDtos = new ArrayList<>();
+
+        for (Product product : products) {
+            productResponseDtos.add(new ProductResponseDto(product));
+        }
+
+        return productResponseDtos;
+    }
+
+    public void updateBySearch(Long id, ItemDto itemDto) {
+        Product product = productRepository.findById(id).orElseThrow(()->new NullPointerException("해당 상품은 존재하지 않습니다."));
+        product.updateByItemDto(itemDto);
     }
 }
