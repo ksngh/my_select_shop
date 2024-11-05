@@ -1,6 +1,8 @@
 package kr.myselectshop.entity;
 
 import jakarta.persistence.*;
+import kr.myselectshop.dto.ProductMypriceRequestDto;
+import kr.myselectshop.dto.ProductRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,5 +38,9 @@ public class Product extends Timestamped {
         this.image = requestDto.getImage();
         this.link = requestDto.getLink();
         this.lprice = requestDto.getLprice();
+    }
+
+    public void update(ProductMypriceRequestDto requestDto){
+        this.myprice=requestDto.getMyprice();
     }
 }

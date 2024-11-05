@@ -1,4 +1,4 @@
-package kr.myselectshop.entity;
+package kr.myselectshop.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
