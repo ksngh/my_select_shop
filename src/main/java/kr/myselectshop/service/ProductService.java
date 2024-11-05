@@ -5,6 +5,7 @@ import kr.myselectshop.dto.ProductMypriceRequestDto;
 import kr.myselectshop.entity.Product;
 import kr.myselectshop.dto.ProductRequestDto;
 import kr.myselectshop.dto.ProductResponseDto;
+import kr.myselectshop.entity.User;
 import kr.myselectshop.naver.dto.ItemDto;
 import kr.myselectshop.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +23,8 @@ public class ProductService {
 
     public static final int MIN_MY_PRICE = 100;
 
-    public ProductResponseDto createProduct(ProductRequestDto productRequestDto) {
-        Product product = productRepository.save(new Product(productRequestDto));
+    public ProductResponseDto createProduct(ProductRequestDto productRequestDto, User user) {
+        Product product = productRepository.save(new Product(productRequestDto,user));
         return new ProductResponseDto(product);
     }
 
@@ -39,9 +40,9 @@ public class ProductService {
         return null;
     }
 
-    public List<ProductResponseDto> getProducts() {
+    public List<ProductResponseDto> getProducts(User user) {
 
-        List<Product> products = productRepository.findAll();
+        List<Product> products = productRepository.findAllByUser(user);
         List<ProductResponseDto> productResponseDtos = new ArrayList<>();
 
         for (Product product : products) {
@@ -54,5 +55,16 @@ public class ProductService {
     public void updateBySearch(Long id, ItemDto itemDto) {
         Product product = productRepository.findById(id).orElseThrow(()->new NullPointerException("해당 상품은 존재하지 않습니다."));
         product.updateByItemDto(itemDto);
+    }
+
+    public List<ProductResponseDto> getAllProducts() {
+        List<Product> products = productRepository.findAll();
+        List<ProductResponseDto> productResponseDtos = new ArrayList<>();
+
+        for (Product product : products) {
+            productResponseDtos.add(new ProductResponseDto(product));
+        }
+
+        return productResponseDtos;
     }
 }
